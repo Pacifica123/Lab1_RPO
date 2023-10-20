@@ -1,14 +1,27 @@
 package com.example.demo.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.time.Duration;
 import java.util.Date;
 
+/**
+ *
+ * @param id
+ * @param name название трека
+ * @param author автор
+ * @param timeLong длительность
+ * @param isRemix оригинал если false
+ * @param rating средняя оценка пользователей
+ * @param publicationDate дата загрузки
+ */
 public record Song(
         Long id,
         String name,
         String author,
-        Integer time_Long, // в секундах
-        Boolean is_Remix,
+        Duration timeLong,
+        boolean isRemix,
         Double rating,  // TODO: будет ограничение оценки
-        Date publication_Date
+        @JsonFormat(pattern = "dd.MM.yyyy") Date publicationDate
 
-) { }
+) {  }

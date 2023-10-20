@@ -38,7 +38,17 @@
 			<artifactId>postgresql</artifactId>
 			<version>42.6.0</version>
 		</dependency>
+
+<!--		&lt;!&ndash;	ДЛЯ ПОПЫТКИ ПРОВЕРИТЬ АПИ &ndash;&gt;-->
+<!--		<dependency>-->
+<!--			<groupId>io.springfox</groupId>-->
+<!--			<artifactId>springfox-swagger2</artifactId>-->
+<!--			<version>2.9.2</version>-->
+<!--		</dependency>-->
 	</dependencies>
+
+
+
 
 	<build>
 		<plugins>

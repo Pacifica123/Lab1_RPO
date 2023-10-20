@@ -19,3 +19,6 @@
 - Ремикс?   (bool)
 - Рейтинг   (double)
 - дата      (date)
+
+
+//TODO: 3. CRUD

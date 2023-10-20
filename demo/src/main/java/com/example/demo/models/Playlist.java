@@ -2,19 +2,20 @@ package com.example.demo.models;
 
 import java.util.Date;
 
+/**
+ *
+ * @param id
+ * @param name название
+ * @param author автор
+ * @param isPrivate // TODO: виден ли плейлист всем
+ * @param creationDate дата создания
+ * @param genre жанр (перечисление)
+ */
 public record Playlist(
-        Integer id,
+        Long id,
         String name,
         String author,
-        Boolean is_private, // TODO: виден ли плейлист всем
-        Date dateOfCreate,
+        Boolean isPrivate,
+        Date creationDate,
         Genre genre
-) {
-    public enum Genre{
-        CLASSICAL,
-        ALTERNATIVE,
-        ROCK,
-        FOLK,
-        JAZZ
-    }
-}
+) { }
