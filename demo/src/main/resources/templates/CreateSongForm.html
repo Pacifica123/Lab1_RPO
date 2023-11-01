@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Публикация песни</title>
+</head>
+<body>
+
+<form action="/api/songs" method="post" enctype="application/json">
+    <label for="name">Название:</label>
+    <input type="text" id="name" name="name"><br><br>
+
+    <label for="author">Автор:</label>
+    <input type="text" id="author" name="author"><br><br>
+
+    <label for="timeLong">Продолжительность:</label>
+    <input type="text" id="timeLong" name="timeLong"><br><br>
+
+    <label for="isRemix">Ремикс:</label>
+    <input type="hidden" name="isRemix" value="false">
+    <input type="checkbox" id="isRemix" name="isRemix" value="true">
+
+    <label for="rating">Оценка:</label>
+    <input type="number" step="0.1" id="rating" name="rating"><br><br>
+
+    <label for="publicationDate">Дата публикации:</label>
+    <input type="date" id="publicationDate" name="publicationDate"><br><br>
+
+    <input type="submit" value="Создать">
+</form>
+
+
+</body>
+</html>
