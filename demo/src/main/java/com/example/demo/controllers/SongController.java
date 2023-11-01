@@ -3,16 +3,21 @@ package com.example.demo.controllers;
 import com.example.demo.models.Song;
 import com.example.demo.repos.SongRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -26,9 +31,14 @@ public class SongController {
         this.songRepository = songRepository;
     }
     @GetMapping()
-    public List<Song> getSongs(){
-        return songRepository.readAll();
+    public ModelAndView getSongs(){
+        ModelAndView m = new ModelAndView("ListOfSongs");
+        m.addObject("songs", songRepository.readAll());
+        return m;
     }
+//    public List<Song> getSongs(){
+//        return songRepository.readAll();
+//    }
     @GetMapping("/{song_id}")
     public Song getSongs(@PathVariable("song_id") Long songId){
         return songRepository.read(songId);
@@ -41,9 +51,29 @@ public class SongController {
 //    }
 
     @PostMapping()
-    @ResponseStatus(HttpStatus.CREATED)
-    public void createSong(@RequestBody Song song){
-        songRepository.create(song);
+    public ResponseEntity<String> createSong(@ModelAttribute Song song){
+        if (song.isRemix() == null){
+            Song correctSong = new Song(song.id(),
+                    song.name(),
+                    song.author(),
+                    song.timeLong(),
+                    false,
+                    song.rating(),
+                    song.publicationDate()
+            );
+            songRepository.create(correctSong);
+        }
+        else {
+            songRepository.create(song);
+        }
+        return ResponseEntity.ok("Песня успешно добавлена");
+    }
+    @RequestMapping("/to_create")
+    public ModelAndView toCreate(Model model){
+//        model.addAttribute("song", new Song());
+        ModelAndView m = new ModelAndView("CreateSongForm");
+
+        return m;
     }
 
     @ExceptionHandler(EmptyResultDataAccessException.class)
@@ -52,7 +82,11 @@ public class SongController {
     }
 
 
-
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
+    }
 //    @PutMapping("/{song_id}")
 //    public Song updateSong(@PathVariable("song_id") Long songId, @RequestBody Song song){
 //        Song updatedSong = findSongById(songId);

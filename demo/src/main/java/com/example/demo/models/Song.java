@@ -20,8 +20,8 @@ public record Song(
         String name,
         String author,
         Duration timeLong,
-        boolean isRemix,
+        Boolean isRemix,
         Double rating,  // TODO: будет ограничение оценки
-        @JsonFormat(pattern = "dd.MM.yyyy") Date publicationDate
+        @JsonFormat(pattern = "yyyy-MM-dd") Date publicationDate
 
 ) {  }

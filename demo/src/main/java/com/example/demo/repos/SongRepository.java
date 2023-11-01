@@ -8,4 +8,8 @@ public interface SongRepository {
     Song read(Long id);
     List<Song> readAll();
     void create(Song s);
+    void delete(Long id);
+
+    void update(Song song);
+
 }

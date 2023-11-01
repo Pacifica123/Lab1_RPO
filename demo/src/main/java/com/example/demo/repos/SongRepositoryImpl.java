@@ -1,5 +1,7 @@
 package com.example.demo.repos;
 
+import com.example.demo.SongRowMapper;
+import com.example.demo.TypeMappers;
 import com.example.demo.models.Song;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -7,18 +9,24 @@ import org.springframework.jdbc.core.DataClassRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 public class SongRepositoryImpl implements SongRepository {
     private static final String CREATE = """
                 INSERT INTO songs (id, name, author, time_long, is_remix, rating, publication_date)
-                VALUES(:id, :name, :author, :timeLong, :isRemix, :rating, :publicationDate)
+                VALUES(:id, :name, :author, :timeLong::interval, :isRemix, :rating, :publicationDate)
             """;
-    private final RowMapper<Song> rowMapper = new DataClassRowMapper<>(Song.class);
+//    private final RowMapper<Song> rowMapper = new DataClassRowMapper<>(Song.class);
+    private final RowMapper<Song> rowMapper = new SongRowMapper();
+
+
     private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate npJdbcTemplate;
 
@@ -50,7 +58,34 @@ public class SongRepositoryImpl implements SongRepository {
 
     @Override
     public void create(Song s) {
-        BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(s);
-        npJdbcTemplate.update(CREATE, parameterSource);
+        if (!Objects.isNull(s)){
+            String timeLong_interval = TypeMappers.durationToInterval(s.timeLong());
+            SqlParameterSource parameters = new MapSqlParameterSource()
+                    .addValue("id", s.id())
+                    .addValue("name", s.name())
+                    .addValue("author", s.author())
+                    .addValue("timeLong", timeLong_interval)
+                    .addValue("isRemix", s.isRemix())
+                    .addValue("rating", s.rating())
+                    .addValue("publicationDate", s.publicationDate());
+
+            npJdbcTemplate.update("""
+                    INSERT INTO songs (name, author, time_long, is_remix, rating, publication_date)
+                VALUES(:name, :author, :timeLong::interval, :isRemix, :rating, :publicationDate)
+                    """, parameters);
+        }
     }
+
+    @Override
+    public void delete(Long id) {
+        jdbcTemplate.update("DELETE FROM songs WHERE id = ?", id);
+    }
+
+    @Override
+    public void update(Song song) {
+        // Реализация метода обновления записи в базе данных
+        String updateQuery = "UPDATE songs SET name = :name, author = :author, time_long = :timeLong, is_remix = :isRemix, rating = :rating, publication_date = :publicationDate WHERE id = :id";
+        npJdbcTemplate.update(updateQuery, new BeanPropertySqlParameterSource(song));
+    }
+
 }
