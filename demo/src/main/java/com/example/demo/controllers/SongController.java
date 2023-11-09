@@ -79,22 +79,22 @@ public class SongController {
     @PutMapping("/up/{song_id}")
     public ResponseEntity<String> updateSong(
             @PathVariable("song_id") Long songId,
-            @ModelAttribute Song updatedSong) throws SQLException {
+            @ModelAttribute Song updatedRequest) throws SQLException {
         Song existingSong = songRepository.read(songId);
         if (existingSong == null) {
             // Если песня не найдена - 404
             return ResponseEntity.notFound().build();
         }
-        Song updatedSongObj = new Song(
+        Song updatedSong = new Song(
                 existingSong.id(),
-                updatedSong.name(),
-                updatedSong.author(),
-                updatedSong.timeLong(),
-                updatedSong.isRemix(),
-                updatedSong.rating(),
-                updatedSong.publicationDate()
+                updatedRequest.name(),
+                updatedRequest.author(),
+                updatedRequest.timeLong(),
+                updatedRequest.isRemix(),
+                updatedRequest.rating(),
+                updatedRequest.publicationDate()
         );
-        songRepository.update(updatedSongObj);
+        songRepository.update(updatedSong);
         return ResponseEntity.ok("Песня обновлена");
     }
 

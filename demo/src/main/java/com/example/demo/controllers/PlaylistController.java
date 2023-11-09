@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -65,6 +66,41 @@ public class PlaylistController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Не удалось создать плейлист..");
         }
     }
+
+    @PutMapping("/up/{playlist_id}")
+    public ResponseEntity<String> updateSong(
+            @PathVariable("playlist_id") Long playlistId,
+            @RequestBody PlaylistRequest request) throws SQLException {
+        Playlist existingPlaylist = playlistRepository.read(playlistId);
+        if (existingPlaylist == null) {
+            // Если песня не найдена - 404
+            return ResponseEntity.notFound().build();
+        }
+        Playlist updatedPlaylist = new Playlist(
+                existingPlaylist.id(),
+                request.getName(),
+                request.getAuthor(),
+                request.getPrivate(),
+                request.getCreationDate(),
+                request.getGenre()
+        );
+        playlistRepository.update(updatedPlaylist);
+        return ResponseEntity.ok("Песня обновлена");
+    }
+
+    @DeleteMapping("/del/{playlist_id}")
+    public ResponseEntity<String> removeSong(
+            @PathVariable("playlist_id") Long playlistId){
+        Playlist existingPlaylist = playlistRepository.read(playlistId);
+        if (existingPlaylist == null) {
+            // Если песня не найдена - 404
+            return ResponseEntity.notFound().build();
+        }
+        playlistRepository.delete(playlistId);
+        return ResponseEntity.ok("Плейлист успешно удален");
+    }
+
+// старый код:
 //    private List<Playlist> playlists; // для теста
 //    public PlaylistController() throws ParseException {
 //        DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
