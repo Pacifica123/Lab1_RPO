@@ -1,8 +1,6 @@
 package com.example.demo.controllers;
 
-import com.example.demo.models.Genre;
 import com.example.demo.models.Playlist;
-import com.example.demo.models.Song;
 import com.example.demo.repos.PlaylistRepository;
 import com.example.demo.requests.PlaylistRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "api/playlists")
@@ -48,7 +40,7 @@ public class PlaylistController {
     public ResponseEntity<String> createPlaylist(@RequestBody PlaylistRequest request) {
         try {
             Boolean isPrivate = true;
-            if (request.getPrivate() == null){
+            if (request.getPrivate() == null) {
                 isPrivate = false;
             }
             Playlist playlist = new Playlist(
@@ -90,7 +82,7 @@ public class PlaylistController {
 
     @DeleteMapping("/del/{playlist_id}")
     public ResponseEntity<String> removeSong(
-            @PathVariable("playlist_id") Long playlistId){
+            @PathVariable("playlist_id") Long playlistId) {
         Playlist existingPlaylist = playlistRepository.read(playlistId);
         if (existingPlaylist == null) {
             // Если песня не найдена - 404

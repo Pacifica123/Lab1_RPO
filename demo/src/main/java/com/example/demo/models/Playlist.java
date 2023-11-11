@@ -15,7 +15,7 @@ public record Playlist(
         Long id,
         String name,
         String author,
-        Boolean isPrivate,
+        boolean isPrivate,
         Date creationDate,
         Genre genre
 ) { }

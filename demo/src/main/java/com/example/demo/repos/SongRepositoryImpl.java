@@ -30,14 +30,10 @@ public class SongRepositoryImpl implements SongRepository {
     private final NamedParameterJdbcTemplate npJdbcTemplate;
 
     @Autowired
-    public SongRepositoryImpl(
-            JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate npjt
-    ){
+    public SongRepositoryImpl(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate){
         this.jdbcTemplate = jdbcTemplate;
-        this.npJdbcTemplate = npjt;
+        this.npJdbcTemplate = namedParameterJdbcTemplate;
     }
-
-
 
     @Override
     public Song read(Long id) {
