@@ -2,6 +2,7 @@ package com.example.demo.repos;
 
 import com.example.demo.models.Song;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public interface SongRepository {
@@ -10,6 +11,6 @@ public interface SongRepository {
     void create(Song s);
     void delete(Long id);
 
-    void update(Song song);
+    void update(Song song) throws SQLException;
 
 }
