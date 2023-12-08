@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Song Details</title>
+</head>
+<body>
+<h1>Song Details</h1>
+<div>
+  <h2 th:text="${song.name}"></h2>
+  <p th:text="${song.author}"></p>
+  <p th:text="${song.timeLong}"></p>
+  <p th:text="${song.isRemix} ? 'Remix' : 'Original'"></p>
+  <p th:text="${song.rating}"></p>
+  <p th:text="${song.publicationDate}"></p>
+</div>
+</body>
+</html>

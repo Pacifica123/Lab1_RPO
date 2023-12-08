@@ -60,7 +60,7 @@ public class PlaylistController {
     }
 
     @PutMapping("/up/{playlist_id}")
-    public ResponseEntity<String> updateSong(
+    public ResponseEntity<String> updatePlaylist(
             @PathVariable("playlist_id") Long playlistId,
             @RequestBody PlaylistRequest request) throws SQLException {
         Playlist existingPlaylist = playlistRepository.read(playlistId);

@@ -21,6 +21,12 @@ public class TypeMappers {
         long seconds = duration.minusHours(hours).minusMinutes(minutes).getSeconds();
         return String.format("%d:%02d:%02d", hours, minutes, seconds);
     }
+    public static Duration intToDuration(long duration){
+        long hours = duration / 3600;
+        long minutes = (duration % 3600) / 60;
+        long seconds = duration % 60;
 
+        return Duration.ofHours(hours).plusMinutes(minutes).plusSeconds(seconds);
+    }
 }
 
