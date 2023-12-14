@@ -68,7 +68,7 @@ public class PlaylistControllerMvc {
         playlistRepository.update(updatedPlaylist);
         return new ModelAndView("successfulUpdatePlaylist");
     }
-    @DeleteMapping()
+    @DeleteMapping("/{playlist_id}")
     public ModelAndView deletePlaylist(@PathVariable("playlist_id") Long playlistId){
         playlistRepository.delete(playlistId);
         return new ModelAndView("successfulDeletePlaylist");

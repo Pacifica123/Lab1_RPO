@@ -93,8 +93,8 @@ public class SongControllerMvc {
         return new ModelAndView("successfulUpdateSong");
     }
 
-    @DeleteMapping()
-    public ModelAndView deleteSong(@PathVariable("song_id") Long songId){
+    @DeleteMapping("/del/{song_id}")
+    public ModelAndView deleteSong(@RequestParam("song_id") Long songId){
         songRepository.delete(songId);
         return new ModelAndView("successfulDeleteSong");
     }
