@@ -40,7 +40,8 @@ public class SongControllerMvc {
     @GetMapping("/to_update/song/{song_id}")
     public ModelAndView toUpdate(@PathVariable("song_id") Long songId){
         ModelAndView m = new ModelAndView("updateFormSong");
-        m.addObject("song", songRepository.read(songId));
+        Song s = songRepository.read(songId);
+        m.addObject("updatedRequest", s);
         return m;
     }
     @PostMapping()
@@ -70,10 +71,10 @@ public class SongControllerMvc {
         return m;
     }
 
-    @PutMapping("/up/{song_id}")
+    @PostMapping("/up/{song_id}")
     public ModelAndView updateSong(
             @PathVariable("song_id") Long songId,
-            @ModelAttribute Song updatedRequest) throws SQLException {
+            @ModelAttribute(name = "updatedRequest") SongRequestWithIntDuration updatedRequest) throws SQLException {
         Song existingSong = songRepository.read(songId);
         if (existingSong == null) {
             // Если песня не найдена - 404
@@ -83,7 +84,7 @@ public class SongControllerMvc {
                 existingSong.id(),
                 updatedRequest.name(),
                 updatedRequest.author(),
-                updatedRequest.timeLong(),
+                TypeMappers.intToDuration(updatedRequest.timeLong()),
                 updatedRequest.isRemix(),
                 updatedRequest.rating(),
                 updatedRequest.publicationDate()

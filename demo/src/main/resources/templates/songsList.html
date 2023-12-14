@@ -24,6 +24,13 @@
         <td th:text="${song.isRemix}">Ремикс?</td>
         <td th:text="${song.rating}">Рейтинг</td>
         <td th:text="${song.publicationDate}">Дата публикации</td>
+        <td>
+            <a th:href="@{/mvc/songs/to_update/song/{song_id}(song_id=${song.id})}">Редактировать</a>
+            <form th:action="@{/mvc/songs/delete/{song_id}(song_id=${song.id})}" method="post" style="display:inline;">
+                <input type="hidden" name="_method" value="delete"/>
+                <input type="submit" value="Удалить"/>
+            </form>
+        </td>
     </tr>
 </table>
 </body>

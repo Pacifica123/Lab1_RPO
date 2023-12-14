@@ -5,16 +5,21 @@
     <title>Update Song</title>
 </head>
 <body>
-<h1>Update Song</h1>
-<!-- Form to update a song -->
-<form th:action="@{/up/{song_id}(song_id=${song.id})}" th:object="${song}" method="put">
+
+<h2>Update Song</h2>
+
+<form th:action="@{'/mvc/songs/up/' + ${updatedRequest.id}}" th:object="${updatedRequest}" method="post">
     <!-- Input fields pre-filled with song details -->
-    <!-- Example: -->
+    <input type="hidden" th:field="*{id}"/>
     <input type="text" th:field="*{name}" placeholder="Name"/><br/>
     <input type="text" th:field="*{author}" placeholder="Author"/><br/>
     <input type="number" th:field="*{timeLong}" placeholder="Time Long"/><br/>
+    <input type="checkbox" th:field="*{isRemix}" id="remix" /><label for="remix">Remix</label><br/>
+    <input type="number" th:field="*{rating}" placeholder="Rating"/><br/>
+    <input type="date" th:field="*{publicationDate}" placeholder="Publication Date (yyyy-MM-dd)"/><br/>
     <!-- Add other fields accordingly -->
     <input type="submit" value="Update"/>
 </form>
+
 </body>
 </html>
